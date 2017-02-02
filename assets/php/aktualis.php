@@ -32,8 +32,8 @@ echo "<h3>Aktuális programjaink</h3>";
 	{	
 		echo "<p>Nagyításhoz, kérem kattintson a képre!</p><br>";
 		while($sor=mysql_fetch_array($eredm)) 
-		{   echo "<p>";
-			echo "<img onclick='megnyit_".$sor["hkep_id"]."()' style='cursor:pointer; display: block; margin-left: auto; margin-right: auto;' alt='' src='".$sor["hkep_link"]."' width=160 /><br></p>";
+		{   echo "<p></p>";
+			echo "<img onclick='megnyit_".$sor["hkep_id"]."()' style='cursor:pointer; display: block; margin-left: auto; margin-right: auto;' alt='' src='".$sor["hkep_link"]."' width=160 /><br>";
 		 	echo "<script>function megnyit_".$sor["hkep_id"]."() {window.open('".$sor["hkep_link"]."','','width=800, height=500');}</script>"; 
 		}
 	}
@@ -48,7 +48,7 @@ echo "<h4>Korábbi programjaink:</h4>";
 	else
 	{
 		while($sor=mysql_fetch_array($eredm)) 
-		{   
+		{   echo "<p></p>";
 			echo "<img onclick='megnyit_".$sor["hkep_id"]."()' style='cursor:pointer; display: block; margin-left: auto; margin-right: auto;' alt='' src='".$sor["hkep_link"]."' width=160 /><br>";
 		 	echo "<script>function megnyit_".$sor["hkep_id"]."() {window.open('".$sor["hkep_link"]."','','width=800, height=500');}</script>"; 
 		}

@@ -1,0 +1,105 @@
+/*menu*/
+#navigation {			width:140px;    float:left;    margin-top:5px;  }
+#navigation ul{			margin:0px;    padding:0px; 
+							background-image: url('../images/hatterek/fa_04vgomb.jpg'); 	background-repeat: repeat;		background-position: right top;		background-size: 100% 100%;  }
+#navigation ul li {		height:25px;	line-height:25px;	list-style:none;	padding-left:10px;	border-top:#fff solid;	border-bottom:#fff solid;	border-width:0px;	cursor:pointer;	color: black;	 }
+#navigation ul li:hover{	background-image: url('../images/hatterek/fa_03v.jpg'); 	background-repeat: repeat;		background-position: right top;		background-size: 100% 100%;
+						color: yellow;    position:relative;  }
+
+#navigation ul li a{				line-height:25px;   width:140px;	   float:left;    text-decoration:none;   font-weight:bold;		color: black;  }
+#navigation ul li a:hover{																  text-decoration:none;							color: yellow; }
+
+#navigation ul ul {				display:none;   position:absolute;   left:140px;   top:0px;   border:#fff solid;   border-width:1px;   background-color: #CCC;  } 
+#navigation ul li:hover ul  {	display:block;  }
+#navigation ul ul li		{   border:none;    width:140px;    float:left;    display:inline;  }
+#navigation ul ul li:hover	{   border:none;  }
+
+
+/*	képcserélgetõ beállításai		*/
+.container		{	margin: 0 auto;  text-align: center;		}
+.container div	{	position: absolute;			left: 300px;	top: 0px;		width: 250px;			height: 175px;		overflow: hidden;   display: block;  display: none;				background-color: #CCC;}
+.container img {	text-align: middle;							top: 0px;		width: auto; /*auto*/	height: 175px;																			}
+.next {				position: absolute;			left: 505px;	top: 145px;		width: 40px;			height:25px;		filter:alpha(opacity=50);   -moz-opacity:0.5;   opacity: 0.5;	}
+.prev {				position: absolute;			left: 305px;	top: 145px;		width: 40px;			height:25px;		filter:alpha(opacity=50);   -moz-opacity:0.5;   opacity: 0.5;	}
+.next img {																								height:20px;}
+.prev img {																								height:20px;}
+
+
+
+.gomb	{		background-image: url('../images/hatterek/fa_04vgomb.jpg'); 				background-repeat: repeat;				background-position: right top;				background-size: 100% 100%;		}
+
+.gombsotet	{	background-image: url('../images/hatterek/fa_03fgomb.jpg'); 				background-repeat: repeat;				background-position: right top;				background-size: 100% 100%;		cursor:pointer; }
+.gombsotet a{				line-height:25px;   width:135px;	   float:left;    text-decoration:none;   font-weight:bold;		color: white;  text-align:center;}
+.gombsotet a:hover{			background-image: url('../images/hatterek/fa_03v.jpg');												color: yellow;  }
+
+.frame_fent	{	background-image: url('../images/hatterek/templom.jpg'), /*url('../images/hatterek/istenhozta.png'),*/ url('../images/hatterek/fa_03v.jpg');	
+				background-repeat: no-repeat, /*no-repeat,*/ no-repeat;
+				background-position: 10px 10px, /*150px 10px,*/ left top;
+				background-size: 130px 170px, /*450px 70%,*/ 100% 100%;} /*150x200*/
+									/*cover*/
+
+.frame_bal {	background-image: url('../images/hatterek/fa_01v.jpg'); 				background-repeat: no-repeat;				background-position: right top;				background-size: 100% 100%;}
+.frame_kozep {	background-image: url('../images/hatterek/free-paper-texture-2.jpg'); 	background-repeat: no-repeat;				background-position: left top;				background-size: 100% 100%;}
+/*.szel_jobb	{	background-image: url('../images/hatterek/fa_03f.jpg'); 				background-repeat: repeat;				background-position: right top;				background-size: 100% 100%;}*/
+.szel_jobb	{	background-image: url('../images/hatterek/fa_02f.jpg'); 				background-repeat: repeat;				background-position: right top;				background-size: 100% 100%;}
+
+
+
+h1			{	font-size:16pt;		text-align:center;	font-weight:bold;												}
+h2			{	font-size:16pt;		text-align:center;																	}
+h3			{	font-size:14pt;		text-align:left;	font-weight:bold;												}
+h4			{	font-size:14pt;		text-align:left;																	}
+h5			{	font-size:12pt;		text-align:center;	font-weight:bold;												}
+.megjegyzes {	font-size:10pt; 	text-align:center;	font-style:italic;		color:#ffbb33;			   				}
+p			{	font-size:12pt;		text-align:center;																	}
+div.keret	{	font-size:12pt;		font-weight:bold;	text-align:center;						border-style: none none dotted none;		background-color: #f2f2f2;	line-height: 100%;		border-color: black;	}
+div.lista	{	font-size:10pt;							text-align:left;						border-style: none;														line-height: 100%;								}
+div.lista2	{	font-size:10pt;		font-weight:normal;	text-align:left;						border-style: dotted none none none;		background-color: #ffffcc;	line-height: 100%;		border-color: #663300;	}
+
+/*table formák*/
+.fejlec {		border-width: 0px;		border-spacing: 0px;	border-style: none;					text-align:center;		position: fixed;     top: 10px;    left: 150px;	}
+
+.naptar {		border-width: 5px;		border-spacing: 5px;	border-style: solid;				text-align:center;		margin-left:auto;   margin-right:auto;}
+.naptar td{		border-width: 2px;								border-style: solid;				vertical-align: text-top;}
+.naptar tr:nth-child(even) {background-color:#ddd;}
+.naptar tr:nth-child(odd)  {background-color:#fff;}
+.naptar2 {		border-width: 5px;		border-spacing: 5px;	border-style: solid;				text-align:center;		margin-left:auto;   margin-right:auto;}
+.naptar2 td{	border-width: 2px;								border-style: solid;				vertical-align: text-top;}
+
+
+.cimlap {		border-width: 0px;		border-spacing: 5px;	border-style: none;					text-align:center;		margin-left:auto;   margin-right:auto;	}
+.cimlap td{		border-width: 0px;								border-style: none none none none;	vertical-align: top;											}
+
+.bevitel {		border-width: thick;	border-spacing: 0px;	border-style: solid;				text-align:center;		margin-left:auto;   margin-right:auto;	}
+.bevitel td{	border-width: thick;							border-style: solid;				text-align:center;												}
+
+
+.lent {			border-width: 1px;		border-spacing: 1px;	border-style: none;		position: fixed;     bottom: 0px;    right: 0px;	color:#ffff00;	font-size:10pt;	font-weight:bold;  text-align:center;}
+.menufent {		border-spacing: 5px;	border-style: none;		position: fixed;     top: 0px;		 left: 0px;								font-size:12pt;	font-weight:bold; 
+				align:center;				width: 100%;
+				background-image: url('../images/hatterek/fa_02v.jpg'); 					background-repeat: repeat;				background-position: right top;				background-size: 100% 100%;}
+.menufent td{	background-image: url('../images/hatterek/fa_03fgomb.jpg'); 				background-repeat: repeat;				background-position: right top;				background-size: 100% 100%;		cursor:pointer;
+				text-align:center;}
+.menufent td a{					    text-decoration:none;   font-weight:bold;		color: white; }
+.menufent td a:hover{																color: yellow;  }
+.menufent td:hover {				background-image: url('../images/hatterek/fa_03v.jpg');												color: yellow;  }
+
+.mise {		border-width: 0px;		border-spacing: 1px 5px;				border-collapse: separate;	margin-left:auto;	   margin-right:auto;	}
+.mise th {	border-width: 0px;																			padding: 0px;					font-size:12pt;	font-weight:bold;	text-align:center; color: #000000;		background-color: #ffffcc;	}
+.mise td {	border-width: 1px;		border-style: none none none inset;		border-color:gray;			padding: 0px;					font-size:9pt;						text-align:center;}
+
+
+.valtottsorszin tr:nth-child(even) {background-color:#ddd;}
+.valtottsorszin tr:nth-child(odd)  {background-color:#fff;}
+.valtottsorszin th	{background-color: black;color: white;font-size:10pt;}
+.valtottsorszin td	{border-width: 0px; border-style: none; border-top: solid black; border-color: gray; padding: 3px; font-size:9pt; text-align:left;}
+
+.normal {		border-width: 0px;	border-spacing: 0px;	border-style: none;	border-color: gray;	border-collapse: separate;	margin-left:auto;     margin-right:auto;}
+.normal th {	border-width: 0px;	padding: 3px;			border-style: none;	border-color: gray;												font-size:10pt;	font-weight:bold;	text-align:center;}
+.normal td {	border-width: 0px;	padding: 3px;			border-style: none;	border-color: gray; border-top: solid black;					font-size:9pt;						text-align:center;}
+
+td ol {font-size:11pt;	text-align:left;}
+
+
+img {display: block; margin-left: auto; margin-right: auto; align: middle; border: 0; vspace=0; hspace=0; border-width: 0px; text-align:center;} 
+

@@ -15,7 +15,7 @@ echo "</HEAD>";
 
 
 echo "<body>";
-require("a_kapcs.inc.cS7.php");
+require("../a_kapcs.inc.cS7.php");
 dbkapcs();
 
 

@@ -62,8 +62,9 @@ if(isset($_POST['felvesz']))
 			echo '<script language="javascript">';		echo 'alert("Feltöltés megtörtént!")';		echo '</script>';
 		}
 	}
-	$query="insert into a_adkeres (adk_mit, adk_kep, adk_meddig, adk_felad_nev, adk_felad_email, adk_felad_telefon, adk_ad, adk_ar, adk_del) values ('".$_POST[fmit]."',";
-	$query=$query."'/".$hova.$name."',".nulloz($_POST[fmeddig]).",'".$_POST[ffelad_nev]."','".$_POST[ffelad_email]."','".$_POST[ffelad_telefon]."','".$_POST[fad]."',".$_POST[far].",0)";
+	$query="insert into a_adkeres (adk_mit, adk_kep, adk_meddig, adk_felad_nev, adk_felad_email, adk_felad_telefon, adk_ad, adk_ar, adk_megjelenik, adk_del) values ('".$_POST[fmit]."',";
+	$query=$query."'/".$hova.$name."',".nulloz($_POST[fmeddig]).",'".$_POST[ffelad_nev]."','".$_POST[ffelad_email]."','".$_POST[ffelad_telefon]."','".$_POST[fad]."',".$_POST[far];
+	$query=$query.",'".pipa($_POST[fch1]).pipa($_POST[fch2]).pipa($_POST[fch3]).pipa($_POST[fch4]).pipa($_POST[fch5])."NNNNN',0)";
 	mysql_query($query) or die ("A felvétel sikertelen!". $query);
 }
 
@@ -71,7 +72,8 @@ if(isset($_POST['felvesz']))
 if(isset($_POST['modosit']))
 {
 		$query="update a_adkeres set adk_mit='".$_POST[fmit]."', adk_meddig=".nulloz($_POST[fmeddig]).", adk_ad='".$_POST[fad]."', adk_ar='".$_POST[far]."', ";
-		$query=$query."adk_felad_nev='".$_POST[ffelad_nev]."', adk_felad_email='".$_POST[ffelad_email]."', adk_felad_telefon='".$_POST[ffelad_telefon]."' "; 
+		$query=$query."adk_felad_nev='".$_POST[ffelad_nev]."', adk_felad_email='".$_POST[ffelad_email]."', adk_felad_telefon='".$_POST[ffelad_telefon]."', "; 
+		$query=$query."adk_megjelenik='".pipa($_POST[fch1]).pipa($_POST[fch2]).pipa($_POST[fch3]).pipa($_POST[fch4]).pipa($_POST[fch5])."NNNNN' "; 
 		$query=$query."where adk_id=".$_POST[mid]; 
 		mysql_query($query) or die ("A módosítás nem sikerült!". $query);
 		unset($_GET['mozgat']);
@@ -93,10 +95,17 @@ if(isset($_GET['mozgat'])) {
 			$mozgatid=$_GET['mozgat'];		$gnev='modosit';				$felirat='Módosít';			$tilt=' disabled';			$szin='#ffcc66';	$mrejt='hidden';	$frejt='';
 			$mit=$sor2['adk_mit'];			$kep=$sor2['adk_kep'];			$meddig=$sor2['adk_meddig'];$felad_nev=$sor2['adk_felad_nev'];				$felad_email=$sor2['adk_felad_email'];	$felad_telefon=$sor2['adk_felad_telefon'];	
 			$ad=$sor2['adk_ad'];			$ar=$sor2['adk_ar'];	
+			if (substr($sor2['adk_megjelenik'],0,1)=='I') {$ch1='checked';} else {$ch1='';}		//A php kódban levõ substr -nél az elsõ karakter a 0-s sorszámú, de MySQL-ben 1-s!!!!!!!!!!!!!!!!!!!!
+			if (substr($sor2['adk_megjelenik'],1,1)=='I') {$ch2='checked';} else {$ch2='';} 
+			if (substr($sor2['adk_megjelenik'],2,1)=='I') {$ch3='checked';} else {$ch3='';} 
+			if (substr($sor2['adk_megjelenik'],3,1)=='I') {$ch4='checked';} else {$ch4='';} 
+			if (substr($sor2['adk_megjelenik'],4,1)=='I') {$ch5='checked';} else {$ch5='';} 
 		 } 
 	else {	$mozgatid=0;					$gnev='felvesz';				$felirat='Felvesz';			$tilt='';					$szin='#669999';	$mrejt='';			$frejt='hidden';
 			$mit='';						$kep='';						$meddig='';					$felad_nev='';									$felad_email='';						$felad_telefon='';	
 			$ad='I';						$ar='';	
+			$ch1='checked';		 		$ch2='';				$ch3='';				$ch4='';				$ch5='';
+
 		 }
 
 
@@ -120,7 +129,13 @@ echo "<table border='0' bgcolor='".$szin."' align='center'><tr><td>";
 		echo "</SELECT></td>";
 		echo "<td><input type='text' name='far' size='8' maxlength='8' value='".$ar."'></td>";
 	echo "</tr></table>";
-echo "</td><td width='10%' ><input type='submit' name='".$gnev."' value='".$felirat."'></td></tr></table>";
+echo "</td><td width='10%' >";
+		echo "<input type='checkbox' name='fch1' value='I' ".$ch1." >kassaiter<br>";
+//		echo "<input type='checkbox' name='fch2' value='I' ".$ch2." >kkakademia<br>";
+//		echo "<input type='checkbox' name='fch3' value='I' ".$ch3." >jakikapolna<br>";
+//		echo "<input type='checkbox' name='fch4' value='I' ".$ch4." >rozsafuzer<br>";
+//		echo "<input type='checkbox' name='fch5' value='I' ".$ch5." >Credo<br>";
+echo "<input type='submit' name='".$gnev."' value='".$felirat."'></td></tr></table>";
 echo "</form>";
 
 
@@ -146,13 +161,22 @@ echo "</form>";
 $query="select * from a_adkeres T where adk_ad like '".$keres1."' order by adk_meddig desc ";  
 $eredm=mysql_query($query);  //query futtatása
 
-echo "<table class='naptar'><tr><th></th><th>ID</th><th>Mit</th><th>Kép linkje</th><th>Kép kinézete:</th><th>Megjelenítése eddig:<th>Hirdetõ neve</th><th>E-mail címe</th><th>Telefonszáma:</th><th>Ad?</th><th>Ár:</th><th></th></tr>";
+echo "<table class='naptar'><tr><th></th><th>ID</th><th>Mit</th><th>Kép linkje</th><th>Kép kinézete:</th><th>Megjelenítése eddig:<th>Hirdetõ neve</th><th>E-mail címe</th><th>Telefonszáma:</th><th>Ad?</th><th>Ár:</th><th>Megjelenítendõ</th><th></th></tr>";
 $v='</font>';
 while($sor=mysql_fetch_array($eredm)) 
   {	if ($sor['adk_del']==0)  {$kep='torol'; $szin="<font color='black'>";} else {$kep='beir'; $szin="<font color='gray'>";}
 		$del="<a href='admin_adkeres.php?delid=".$sor['adk_id']."'><img src='".$kep.".png' height='15'></a>";
 		$mod="<a href='admin_adkeres.php?mozgat=".$sor['adk_id']."'><img src='mozgat.png' height='15'></a>";
 		echo "<tr><td>".$del."</td><td>".$szin.$sor['adk_id'].$v."</td><td>".$szin.$sor['adk_mit'].$v."</td><td>".$szin."<a href='".$sor['adk_kep']."' target='_blank'>".$sor['adk_kep']."</a>".$v."</td><td><img src='".$sor['adk_kep']."' width='80'> </td><td>".$szin.$sor['adk_meddig'].$v."</td><td>".$szin.$sor['adk_felad_nev'].$v."</td><td>".$szin.$sor['adk_felad_email'].$v."</td><td>".$szin.$sor['adk_felad_telefon'].$v."</td><td>".$szin.$sor['adk_ad'].$v."</td><td>".$szin.$sor['adk_ar'].$v."</td>";
+		echo "<td align='left'>";
+		if (substr($sor['adk_megjelenik'],0,1)=='I') {$ch='checked';} else {$ch='';} echo "<input type='checkbox' ".$ch." disabled>kassaiter<br>";
+		if (substr($sor['adk_megjelenik'],1,1)=='I') {$ch='checked';} else {$ch='';} echo "<input type='checkbox' ".$ch." disabled>kkakademia<br>";
+		if (substr($sor['adk_megjelenik'],2,1)=='I') {$ch='checked';} else {$ch='';} echo "<input type='checkbox' ".$ch." disabled>jakikapolna<br>";
+		if (substr($sor['adk_megjelenik'],3,1)=='I') {$ch='checked';} else {$ch='';} echo "<input type='checkbox' ".$ch." disabled>rozsafuzer<br>";
+		if (substr($sor['adk_megjelenik'],4,1)=='I') {$ch='checked';} else {$ch='';} echo "<input type='checkbox' ".$ch." disabled>Credo<br>";
+//		if (substr($sor['adk_megjelenik'],5,1)=='I') {$ch='checked';} else {$ch='';} echo "<input type='checkbox' ".$ch." disabled>kassaiter<br>";
+		echo "</td>";
+
 		echo "<td>".$mod."</td></tr>";
 	  }
 echo "</table>";

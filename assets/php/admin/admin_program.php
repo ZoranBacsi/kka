@@ -28,9 +28,9 @@ if(isset($_GET['delid']))
 
 if(isset($_POST['felvesz']))
 {		
-		$query="insert into a_programok (prg_nap, prg_ido, prg_tip_id, prg_hely_id, prg_szem_id_1, prg_szem_id_2, prg_leiras, prg_leirlink, prg_reszletes, prg_arkat, prg_del) values ";
+		$query="insert into a_programok (prg_nap, prg_ido, prg_tip_id, prg_hely_id, prg_szem_id_1, prg_szem_id_2, prg_leiras, prg_leirlink, prg_reszletes, prg_arkat, prg_megjelenik, prg_del) values ";
 		$query=$query."('".$_POST[datum]."','".$_POST[ido]."',".$_POST[esemeny].",".$_POST[helyszin].",".nulloz(ekezetcsere($_POST[eloado1])).",".nulloz(ekezetcsere($_POST[eloado2])).",'".ekezetcsere($_POST[leir])."',";
-		$query=$query.nulloz($_POST[leirlink]).",".nulloz($_POST[reszletes]).",'".$_POST[arkat]."',0)";
+		$query=$query.nulloz($_POST[leirlink]).",".nulloz($_POST[reszletes]).",'".$_POST[arkat]."','".pipa($_POST[fch1]).pipa($_POST[fch2]).pipa($_POST[fch3]).pipa($_POST[fch4]).pipa($_POST[fch5])."NNNNN',0)";
 		mysql_query($query) or die ("A felvétel sikertelen!". $query);
 }
 
@@ -42,7 +42,7 @@ if(isset($_POST['modosit']))
 		$query=$query.", prg_tip_id=".$_POST[esemeny].", prg_hely_id=".$_POST[helyszin];
 		$query=$query.", prg_szem_id_1=".nulloz(ekezetcsere($_POST[eloado1])).", prg_szem_id_2=".nulloz(ekezetcsere($_POST[eloado2]));
 		$query=$query.", prg_leiras='".ekezetcsere($_POST[leir])."', prg_leirlink=".nulloz($_POST[leirlink]);
-		$query=$query.", prg_reszletes=".nulloz($_POST[reszletes]).", prg_arkat='".$_POST[arkat]."'";
+		$query=$query.", prg_reszletes=".nulloz($_POST[reszletes]).", prg_arkat='".$_POST[arkat]."', prg_megjelenik='".pipa($_POST[fch1]).pipa($_POST[fch2]).pipa($_POST[fch3]).pipa($_POST[fch4]).pipa($_POST[fch5])."NNNNN'";
 		$query=$query." where prg_id=".$_POST[mid]; 
 		mysql_query($query) or die ("A módosítás nem sikerült!". $query);
 		unset($_GET['mozgat']);
@@ -65,6 +65,11 @@ if(isset($_GET['mozgat'])) {
 			$mozgatid=$_GET['mozgat'];			$gnev='modosit';				$felirat='Módosít';					$tilt=' disabled';					$szin='#ffcc66';
 			$nap=$sor2['prg_nap'];				$ido=$sor2['prg_ido'];			$tip_id=$sor2['prg_tip_id'];		$hely_id=$sor2['prg_hely_id'];		$szem_id_1=$sor2['prg_szem_id_1'];		
 			$szem_id_2=$sor2['prg_szem_id_2'];	$leiras=$sor2['prg_leiras'];	$leirlink=$sor2['prg_leirlink'];	$reszletes=$sor2['prg_reszletes'];	$arkat=$sor2['prg_arkat'];	
+			if (substr($sor2['prg_megjelenik'],0,1)=='I') {$ch1='checked';} else {$ch1='';}		//A php kódban levõ substr -nél az elsõ karakter a 0-s sorszámú, de MySQL-ben 1-s!!!!!!!!!!!!!!!!!!!!
+			if (substr($sor2['prg_megjelenik'],1,1)=='I') {$ch2='checked';} else {$ch2='';} 
+			if (substr($sor2['prg_megjelenik'],2,1)=='I') {$ch3='checked';} else {$ch3='';} 
+			if (substr($sor2['prg_megjelenik'],3,1)=='I') {$ch4='checked';} else {$ch4='';} 
+			if (substr($sor2['prg_megjelenik'],4,1)=='I') {$ch5='checked';} else {$ch5='';} 
 		 } 
 	else {	
 			$query="SELECT current_date() as datum"; 
@@ -74,6 +79,7 @@ if(isset($_GET['mozgat'])) {
 			$mozgatid=0;						$gnev='felvesz';				$felirat='Felvesz';				$tilt='';						$szin='#669999';
 			$nap=substr($sor["datum"],0,4);		$ido=':00';						$tip_id=1;						$hely_id=0;						$szem_id_1=0;		
 			$szem_id_2=0;						$leiras='';						$leirlink='';					$reszletes='';					$arkat='ingyenes';	
+			$ch1='checked';		 		$ch2='';				$ch3='';				$ch4='';				$ch5='';
 		 }
 
 
@@ -132,10 +138,17 @@ echo "<table border='3'><tr><th>Részletes program</th><th>Belépõ ára</th></tr><t
 echo "<td><input type='text' name='reszletes' size='150' maxlength='500' value='".$reszletes."'></td>";
 echo "<td><input type='text' name='arkat' size='15' maxlength='15' value='".$arkat."'></td>";
 echo "</tr></table>";
-echo "</th><th width='10%' >";
+echo "</th><th width='10%' ><table><tr><td>";
+echo "<input type='checkbox' name='fch1' value='I' ".$ch1.">kassaiter<br>";
+//echo "<input type='checkbox' name='fch2' value='I' ".$ch2." >kkakademia<br>";
+//echo "<input type='checkbox' name='fch3' value='I' ".$ch3." >jakikapolna<br>";
+//echo "<input type='checkbox' name='fch4' value='I' ".$ch4." >rozsafuzer<br>";
+//echo "<input type='checkbox' name='fch5' value='I' ".$ch5." >Credo<br>";
+echo "</td></tr><tr><td >";
 echo "<input type='submit' name='".$gnev."' value='".$felirat."'>";
-echo "</th></tr></table>";
+echo "</td></tr></table></th></tr></table>";
 echo "</form>";
+
 
 
 
@@ -161,7 +174,7 @@ echo "</form>";
 
 
 $query="select prg_id, prg_nap, prg_ido, hely_rnev, hely_megnev, hely_cim, coalesce(hely_link,'-') as hely_link, coalesce(F1.szem_nev,'-') AS sz1, coalesce(F1.szem_hiv,'-') as szh1, coalesce(F2.szem_nev, '-' ) as sz2, coalesce(F2.szem_hiv,'-') as szh2, ";
-$query=$query."case when DATEDIFF(prg_nap,current_date)<0 then -1 when DATEDIFF(prg_nap,current_date)=0 then 0 when DATEDIFF(prg_nap,current_date)<7 then 1 when DATEDIFF(prg_nap,current_date)<31 then 2 else 3 end as friss, prg_del, ";
+$query=$query."case when DATEDIFF(prg_nap,current_date)<0 then -1 when DATEDIFF(prg_nap,current_date)=0 then 0 when DATEDIFF(prg_nap,current_date)<7 then 1 when DATEDIFF(prg_nap,current_date)<31 then 2 else 3 end as friss, prg_del, prg_megjelenik, ";
 $query=$query."prg_leiras, coalesce(prg_leirlink,'-') as link, DAYOFWEEK(prg_nap) as nap, prg_arkat, coalesce(prg_reszletes,'') as prg_reszletes, case when LENGTH(tip_tipus)>1 then concat(tip_nev,' (',tip_tipus,')') else tip_nev end as tip_nev ";
 $query=$query."from a_programok P ";
 $query=$query."  join a_helyszinek on hely_id=prg_hely_id ";
@@ -172,7 +185,7 @@ $query=$query."  LEFT JOIN a_szemelyek F2 ON P.prg_szem_id_2 = F2.szem_id ";
 $query=$query."order by prg_nap desc, prg_ido desc";
 $eredm=mysql_query($query);  //query futtatása
 
-echo "<table class='naptar'><tr><th></th><th>ID</th><th>Dátum</th><th>Idõpont</th><th>Típus</th><th>Helyszín</th><th>Elõadó 1</th><th>Elõadó 2</th><th>Leírás</th><th>Részletes leírás</th><th>Árkategória</th><th></th></tr>";
+echo "<table class='naptar'><tr><th></th><th>ID</th><th>Dátum</th><th>Idõpont</th><th>Típus</th><th>Helyszín</th><th>Elõadó 1</th><th>Elõadó 2</th><th>Leírás</th><th>Részletes leírás</th><th>Megjelenítendõ</th><th>Árkategória</th><th></th></tr>";
 $v='</font>';
 while($sor=mysql_fetch_array($eredm)) 
   {	if ($sor['prg_del']==0)  {$kep='torol'; $szin="<font color='black'>";} else {$kep='beir'; $szin="<font color='gray'>";}
@@ -181,7 +194,15 @@ while($sor=mysql_fetch_array($eredm))
 		$mod="<a href='admin_program.php?mozgat=".$sor['prg_id']."'><img src='mozgat.png' height='15'></a>";
 		echo "<tr><td>".$del."</td><td>".$szin.$sor['prg_id'].$v."</td><td>".$szin.$sor['prg_nap'].$v."</td><td>".$szin.$sor['prg_ido'].$v."</td><td>".$szin.$sor['tip_nev'].$v."</td>";
 		echo "<td>".$szin.$sor['hely_cim'].$v."</td><td>".$szin.$sor['sz1'].$v."</td><td>".$szin.$sor['sz2'].$v."</td>";   
-		echo "<td>".$szin.$href.$sor['prg_leiras'].$hrefv.$v."</td><td>".$szin.$sor['prg_reszletes'].$v."</td><td>".$szin.$sor['prg_arkat'].$v."</td>";
+		echo "<td>".$szin.$href.$sor['prg_leiras'].$hrefv.$v."</td><td>".$szin.$sor['prg_reszletes'].$v."</td><td align='left'>";
+		if (substr($sor['prg_megjelenik'],0,1)=='I') {$ch='checked';} else {$ch='';} echo "<input type='checkbox' ".$ch." disabled>kassaiter<br>";
+		if (substr($sor['prg_megjelenik'],1,1)=='I') {$ch='checked';} else {$ch='';} echo "<input type='checkbox' ".$ch." disabled>kkakademia<br>";
+		if (substr($sor['prg_megjelenik'],2,1)=='I') {$ch='checked';} else {$ch='';} echo "<input type='checkbox' ".$ch." disabled>jakikapolna<br>";
+		if (substr($sor['prg_megjelenik'],3,1)=='I') {$ch='checked';} else {$ch='';} echo "<input type='checkbox' ".$ch." disabled>rozsafuzer<br>";
+		if (substr($sor['prg_megjelenik'],4,1)=='I') {$ch='checked';} else {$ch='';} echo "<input type='checkbox' ".$ch." disabled>Credo<br>";
+//		if (substr($sor['prg_megjelenik'],5,1)=='I') {$ch='checked';} else {$ch='';} echo "<input type='checkbox' ".$ch." disabled>kassaiter<br>";
+		echo "</td><td>".$szin.$sor['prg_arkat'].$v."</td>";
+
 		echo "<td>".$mod."</td></tr>";
 	  }
 echo "</table>";

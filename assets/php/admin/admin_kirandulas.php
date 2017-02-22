@@ -28,8 +28,9 @@ if(isset($_GET['delid']))
 
 if(isset($_POST['felvesz']))
 {		
-		$query="insert into a_kirandulas (kir_taldate, kir_talhely, kir_nev, kir_leiras, kir_idotartam, kir_jelhatdate, kir_kapcsolat, kir_izelito, kir_del) values ";
-		$query=$query."('".$_POST[taldate]."','".$_POST[talhely]."','".$_POST[nev]."','".$_POST[leiras]."','".$_POST[idotartam]."',".nulloz($_POST[jelhatdate]).",'".$_POST[kapcsolat]."',".nulloz($_POST[izelito]).",0)";
+		$query="insert into a_kirandulas (kir_taldate, kir_talhely, kir_nev, kir_leiras, kir_idotartam, kir_jelhatdate, kir_kapcsolat, kir_izelito, kir_megjelenik, kir_del) values ";
+		$query=$query."('".$_POST[taldate]."','".$_POST[talhely]."','".$_POST[nev]."','".$_POST[leiras]."','".$_POST[idotartam]."',".nulloz($_POST[jelhatdate]).",'".$_POST[kapcsolat]."',".nulloz($_POST[izelito]).",'";
+		$query=$query.pipa($_POST[fch1]).pipa($_POST[fch2]).pipa($_POST[fch3]).pipa($_POST[fch4]).pipa($_POST[fch5])."NNNNN',0)";
 		mysql_query($query) or die ("A felvétel sikertelen!". $query);
 }
 
@@ -42,6 +43,7 @@ if(isset($_POST['modosit']))
 		$query=$query.", kir_idotartam='".$_POST[idotartam]."', kir_jelhatdate=".nulloz($_POST[jelhatdate])." ";
 		$query=$query.", kir_kapcsolat='".$_POST[kapcsolat]."'";
 		$query=$query.", kir_izelito=".nulloz($_POST[izelito])." ";
+		$query=$query.", kir_megjelenik='".pipa($_POST[fch1]).pipa($_POST[fch2]).pipa($_POST[fch3]).pipa($_POST[fch4]).pipa($_POST[fch5])."NNNNN' ";
 		$query=$query." where kir_id=".$_POST[mid]; 
 		mysql_query($query) or die ("A módosítás nem sikerült!". $query);
 		unset($_GET['mozgat']);
@@ -64,6 +66,11 @@ if(isset($_GET['mozgat'])) {
 			$mozgatid=$_GET['mozgat'];			$gnev='modosit';					$felirat='Módosít';			$tilt=' disabled';					$szin='#ffcc66';
 			$taldate=$sor2['kir_taldate'];		$talhely=$sor2['kir_talhely'];		$nev=$sor2['kir_nev'];		$leiras=$sor2['kir_leiras'];		$izelito=$sor2['kir_izelito'];
 			$idotartam=$sor2['kir_idotartam'];	$jelhatdate=$sor2['kir_jelhatdate'];$kapcsolat=$sor2['kir_kapcsolat'];	
+			if (substr($sor2['kir_megjelenik'],0,1)=='I') {$ch1='checked';} else {$ch1='';}		//A php kódban levõ substr -nél az elsõ karakter a 0-s sorszámú, de MySQL-ben 1-s!!!!!!!!!!!!!!!!!!!!
+			if (substr($sor2['kir_megjelenik'],1,1)=='I') {$ch2='checked';} else {$ch2='';} 
+			if (substr($sor2['kir_megjelenik'],2,1)=='I') {$ch3='checked';} else {$ch3='';} 
+			if (substr($sor2['kir_megjelenik'],3,1)=='I') {$ch4='checked';} else {$ch4='';} 
+			if (substr($sor2['kir_megjelenik'],4,1)=='I') {$ch5='checked';} else {$ch5='';} 
 		 } 
 	else {	
 			$query="SELECT current_date() as taldate"; 
@@ -73,18 +80,26 @@ if(isset($_GET['mozgat'])) {
 			$mozgatid=0;						$gnev='felvesz';				$felirat='Felvesz';				$tilt='';						$szin='#669999';
 			$nap=substr($sor["taldate"],0,4);	$talhely='';					$nev='';						$leiras='';						$izelito='';
 			$idotartam='';						$jelhatdate='';					$kapcsolat='';	
+			$ch1='checked';		 		$ch2='';				$ch3='';				$ch4='';				$ch5='';
+
 		 }
 echo "<form action='' name='".$gnev."' method='post'>";
 echo "<table border='3' bgcolor='".$szin."' align='center'>";
-echo "<tr><th>Találkozás idõpontja<input type='hidden' id='mid' name='mid' value='".$mozgatid."'></th><td><input type='text' name='taldate' size='20' maxlength='25' value='".$taldate."'></td></tr>";
-echo "<tr><th>Találkozási hely:</th><td><input type='text' name='talhely' size='50' maxlength='150' value='".$talhely."'></td></tr>";
+echo "<tr><th>Találkozás idõpontja<input type='hidden' id='mid' name='mid' value='".$mozgatid."'></th><td><input type='text' name='taldate' size='20' maxlength='25' value='".$taldate."'></td><td>Megjelenik</td></tr>";
+echo "<tr><th>Találkozási hely:</th><td><input type='text' name='talhely' size='50' maxlength='150' value='".$talhely."'></td><td rowspan='7'>";
+echo "<input type='checkbox' name='fch1' value='I' ".$ch1." >kassaiter<br>";
+//echo "<input type='checkbox' name='fch2' value='I' ".$ch2." >kkakademia<br>";
+//echo "<input type='checkbox' name='fch3' value='I' ".$ch3." >jakikapolna<br>";
+//echo "<input type='checkbox' name='fch4' value='I' ".$ch4." >rozsafuzer<br>";
+//echo "<input type='checkbox' name='fch5' value='I' ".$ch5." >Credo<br>";
+echo "</td></tr>";
 echo "<tr><th>Kirándulás célpontja:</th><td><input type='text' name='nev' size='50' maxlength='150' value='".$nev."'></td></tr>";
 echo "<tr><th>Részletes leírás</th><td><textarea name='leiras' rows='5' cols='80' maxlength='1500' >".$leiras."</textarea></td></tr>";
 echo "<tr><th>Kirándulás idõtartama:</th><td><input type='text' name='idotartam' size='50' maxlength='50' value='".$idotartam."'></td></tr>";
 echo "<tr><th>Jelentkezési határidõ:</th><td><input type='text' name='jelhatdate' size='20' maxlength='25' value='".$jelhatdate."'></td></tr>";
 echo "<tr><th>Kapcsolat:</th><td><textarea name='kapcsolat' rows='2' cols='60' maxlength='150' >".$kapcsolat."</textarea></td></tr>";
 echo "<tr><th>Kedvcsináló (url):</th><td><input type='text' name='izelito' size='100' maxlength='200' value='".$izelito."'></td></tr>";
-echo "<tr><th colspan='2'><input type='submit' name='".$gnev."' value='".$felirat."'>";
+echo "<tr><th colspan='3'><input type='submit' name='".$gnev."' value='".$felirat."'>";
 echo "</table>";
 echo "</form>";
 
@@ -113,7 +128,7 @@ $query="select * from a_kirandulas ";
 $query=$query."order by coalesce(kir_taldate) desc, kir_id desc";
 $eredm=mysql_query($query);  //query futtatása
 
-echo "<table class='naptar'><tr><th></th><th>ID</th><th>Találkozó idõpontja</th><th>Találkozó helye</th><th>Célpont</th><th>Leírás</th><th>Idõtartam</th><th>Jelentkezési határidõ</th><th>Kapcsolat</th><th>Kedvcsináló</th></tr>";
+echo "<table class='naptar'><tr><th></th><th>ID</th><th>Találkozó idõpontja</th><th>Találkozó helye</th><th>Célpont</th><th>Leírás</th><th>Idõtartam</th><th>Jelentkezési határidõ</th><th>Kapcsolat</th><th>Kedvcsináló</th><th>Megjelenítendõ</th></tr>";
 $v='</font>';
 while($sor=mysql_fetch_array($eredm)) 
   {	if ($sor['kir_del']==0)  {$kep='torol'; $szin="<font color='black'>";} else {$kep='beir'; $szin="<font color='gray'>";}
@@ -122,6 +137,14 @@ while($sor=mysql_fetch_array($eredm))
 	echo "<tr><td>".$del."</td><td>".$szin.$sor['kir_id'].$v."</td><td>".$szin.$sor['kir_taldate'].$v."</td><td>".$szin.$sor['kir_talhely'].$v."</td><td>".$szin.$sor['kir_nev'].$v."</td>";
 	echo "<td>".$szin.$sor['kir_leiras'].$v."</td><td>".$szin.$sor['kir_idotartam'].$v."</td><td>".$szin.$sor['kir_jelhatdate'].$v."</td>";   
 	echo "<td>".$szin.$sor['kir_kapcsolat'].$v."</td><td>".$szin.$sor['kir_izelito'].$v."</td>";
+	echo "<td align='left'>";
+	if (substr($sor['kir_megjelenik'],0,1)=='I') {$ch='checked';} else {$ch='';} echo "<input type='checkbox' ".$ch." disabled>kassaiter<br>";
+	if (substr($sor['kir_megjelenik'],1,1)=='I') {$ch='checked';} else {$ch='';} echo "<input type='checkbox' ".$ch." disabled>kkakademia<br>";
+	if (substr($sor['kir_megjelenik'],2,1)=='I') {$ch='checked';} else {$ch='';} echo "<input type='checkbox' ".$ch." disabled>jakikapolna<br>";
+	if (substr($sor['kir_megjelenik'],3,1)=='I') {$ch='checked';} else {$ch='';} echo "<input type='checkbox' ".$ch." disabled>rozsafuzer<br>";
+	if (substr($sor['kir_megjelenik'],4,1)=='I') {$ch='checked';} else {$ch='';} echo "<input type='checkbox' ".$ch." disabled>Credo<br>";
+//	if (substr($sor['kir_megjelenik'],5,1)=='I') {$ch='checked';} else {$ch='';} echo "<input type='checkbox' ".$ch." disabled>kassaiter<br>";
+	echo "</td>";
 	echo "<td>".$mod."</td></tr>";
   }
 echo "</table>";

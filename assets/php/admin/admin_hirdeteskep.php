@@ -71,7 +71,7 @@ if(isset($_POST['felvesz']))
 if(isset($_POST['modosit']))
 {
 		$query="update a_hirdetes_kepek set hkep_kezd=".nulloz($_POST[fkezd]).", hkep_ervenyes='".$_POST[fervenyes]."', hkep_tip_id=".$_POST[ftip_id].", hkep_leiras='".$_POST[fleir]."', ";   
-		$query=$query."hkep_megjelenik='".pipa($_POST[fch1]).pipa($_POST[fch2]).pipa($_POST[fch3]).pipa($_POST[fch4]).pipa($_POST[fch5])."NNNNN'";
+		$query=$query."hkep_megjelenik='".pipa($_POST[fch1]).pipa($_POST[fch2]).pipa($_POST[fch3]).pipa($_POST[fch4]).pipa($_POST[fch5])."NNNNN' ";
 		$query=$query." where hkep_id=".$_POST[mid];											//hkep_link='".$_POST[flink]."', 
 		mysql_query($query) or die ("A módosítás nem sikerült!". $query);
 		unset($_GET['mozgat']);
@@ -120,11 +120,11 @@ echo "<table border='0' bgcolor='".$szin."' align='center'><tr><td>";
 		}
 		echo "</SELECT></td>";
 		echo "<td>";
-		echo "<input type='checkbox' name='fch1' value='I' ".$ch1.">kassaiter<br>";
-		echo "<input type='checkbox' name='fch2' value='I' ".$ch2.">kkakademia<br>";
-		echo "<input type='checkbox' name='fch3' value='I' ".$ch3.">jakikapolna<br>";
-		echo "<input type='checkbox' name='fch4' value='I' ".$ch4.">rozsafuzer<br>";
-		echo "<input type='checkbox' name='fch5' value='I' ".$ch5.">Credo<br>";
+		echo "<input type='checkbox' name='fch1' value='I' ".$ch1." >kassaiter<br>";
+		echo "<input type='checkbox' name='fch2' value='I' ".$ch2." >kkakademia<br>";
+//		echo "<input type='checkbox' name='fch3' value='I' ".$ch3." >jakikapolna<br>";
+//		echo "<input type='checkbox' name='fch4' value='I' ".$ch4." >rozsafuzer<br>";
+//		echo "<input type='checkbox' name='fch5' value='I' ".$ch5." >Credo<br>";
 		echo "</td>";
 	echo "</tr></table>";
 echo "</td><td width='10%' ><input type='submit' name='".$gnev."' value='".$felirat."'></td></tr></table>";
